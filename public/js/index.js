@@ -8,4 +8,11 @@ socket.on('disconnect',() => {
 
 socket.on('newMessage', (message) => {
     console.log('newMessage',message);
+}); 
+
+socket.emit('createMessage',{
+    from:'Rancho',
+    text:'Hadd hogyi..'
+} , (data) => {
+  console.log('Got It',data);  
 });

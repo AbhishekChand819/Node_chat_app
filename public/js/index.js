@@ -1,3 +1,4 @@
+$(".se-pre-con").show().delay(2000).fadeOut();
 var socket = io();
 socket.on('connect',() =>{
     console.log('Connected to Server');

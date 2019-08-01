@@ -5,6 +5,17 @@
 <link rel="shortcut icon" href="https://d3bv2hg4q0qyg2.cloudfront.net/2018/12/08/33b869f90619e81763dbf1fccc896d8d.jpg" type="image/x-icon" /> 
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://twemoji.maxcdn.com/2/twemoji.min.js" 
+        integrity="sha384-vojMYWMgmEhE4UFyXarYAx15WrGwFWfYep8svrRf1anCUzrYn9xlhuXrK9fgsixc" 
+        crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" 
+        crossorigin="anonymous">
+</script>
+<link href="css/jquery.lsxemojipicker.css" rel="stylesheet">
+<script src="js/libs/jquery.lsxemojipicker.js"></script>
 </head>
 
 <body class="chat">
@@ -18,10 +29,14 @@
         <ol class="chat__messages" id="messages"></ol>
         <div class="chat__footer">
             <form id="message-form">
-                <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
-                <button>Send</button>
+<!--               <div contenteditable="true" style="width: 100%; min-height:100px">
+                
+              </div> -->
+              <button class="picker"><i class="fa fa-smile-o"></i></button>
+              <textarea name="message" placeholder="Type a message" autofocus rows="1"></textarea>
+                <button><i class="fa fa-send-o"></i></button>
             </form>
-            <button id="send-location">Send Location</button>
+<!--             <button id="send-location">Send Location</button> -->
         </div>
 </div>
 

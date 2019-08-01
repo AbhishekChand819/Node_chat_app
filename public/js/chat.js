@@ -95,3 +95,10 @@ locationButton.on('click', () => {
         alert('Unable to fetch Location. ');
     });
 });
+
+$('.picker').lsxEmojiPicker({
+  twemoji: true,
+  onSelect: function(emoji){
+    console.log(emoji);
+  }
+});

@@ -8,28 +8,34 @@
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body class="centered-form">
-            <div class="se-pre-con"></div>
+        <div class="se-pre-con"></div> <!-- Loader -->
         <div class="centered-form__form">
-            <form action="/chat.html">
+        <form action="/part.html">
             <div class="form-field">
                 <h3>Join A Chat</h3>
             </div>
-            <div class="form-field">
+            <div id="name_wrapper" class="form-field">
                 <label>Display Name</label>
-                <input type="text" name="name" autofocus/>
+                <input type="text" id="text" name="name" autofocus/>
             </div>
-            <div class="form-field">
+            <div id="room_wrapper" class="form-field">
                 <label>Room Name</label>
-                <input type="text" name="room"/>
+                <input type="text" id="room" name="room"/>
             </div>
             <div class="form-field">
-                <button>Join</button>
+                <button class="join">Join</button>
             </div>
         </form>
         </div>
         <script src="/js/libs/jquery-3.3.1.min.js"></script>
         <script>
             $(".se-pre-con").show().delay(2000).fadeOut();
+            const urlParams = new URLSearchParams(window.location.search);
+            const room = urlParams.get('room');
+            if(room){
+              $("#room_wrapper").hide();
+              $("#room").val(room);
+            }
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     </body>

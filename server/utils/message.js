@@ -16,4 +16,28 @@ return {
 }
 };
 
-module.exports= {generateMessage,generateLocationMessage};
+var generateImgMessage = (from,image) => {
+return {
+    from,
+    image:`${image}`,
+    createdAt: moment.valueOf()
+}
+};
+
+var generateVidMessage = (from,vid) => {
+return {
+    from,
+    vid:`${vid}`,
+    createdAt: moment.valueOf()
+}
+};
+
+var generateAttMessage = (from,att) => {
+return {
+    from,
+    att:`${att}`,
+    createdAt: moment.valueOf()
+}
+};
+
+module.exports= {generateMessage,generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage};

@@ -42,12 +42,19 @@ socket.on('updateUserList',function(users) {
 });
 
 socket.on('newMessage', (message) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+    let position = 'margin-right: auto;';
+    if(name == message.from){
+      position = 'margin-left: auto;';
+    }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#message-template').html();
     var html = Mustache.render(template, {
         text: message.text,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        position: position
     });
     jQuery('#messages').append(html);
     scrollToBottom();
@@ -64,6 +71,44 @@ socket.on('newLocationMessage',(message) => {
     jQuery('#messages').append(html);
     scrollToBottom();
 })
+
+socket.on('newImgMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#img-message-template').html();
+    var html = Mustache.render(template, {
+        image: message.image,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
+    scrollToBottom();
+}); 
+
+socket.on('newVidMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#vid-message-template').html();
+    var html = Mustache.render(template, {
+        vid: message.vid,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
+    scrollToBottom();
+}); 
+
+socket.on('newAttMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#att-message-template').html();
+    var html = Mustache.render(template, {
+        att: message.att,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
+    scrollToBottom();
+}); 
+
+// socket.on('user image', image);
 
 jQuery('#message-form').on('submit',(e) => {
     e.preventDefault();
@@ -96,9 +141,49 @@ locationButton.on('click', () => {
     });
 });
 
-$('.picker').lsxEmojiPicker({
-  twemoji: true,
-  onSelect: function(emoji){
-    console.log(emoji);
-  }
-});
+  $('#imagefile').bind('change', function(e){
+      var data = e.originalEvent.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(evt){
+        // image('',evt.target.result);
+        socket.emit('createImgMessage', {img: evt.target.result});
+      };
+      reader.readAsDataURL(data);
+    });
+
+  $('#videofile').bind('change', function(e){
+      var data = e.originalEvent.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(evt){
+        // image('',evt.target.result);
+        socket.emit('createVidMessage', {vid: evt.target.result});
+      };
+      reader.readAsDataURL(data);
+    });
+
+$('#attfile').bind('change', function(e){
+      var data = e.originalEvent.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(evt){
+        // image('',evt.target.result);
+        socket.emit('createAttMessage', {att: evt.target.result});
+      };
+      reader.readAsDataURL(data);
+    });
+
+    $(function(){
+      setTimeout(function(){
+        $('.emojionearea-editor').keypress(function(e){   
+          if(e.which == 13 && e.shiftKey) {
+            
+          } else if (e.which == 13) {
+            var messageTextbox = $('.emojionearea-editor');
+            socket.emit('createMessage',{
+                text:messageTextbox.html()
+            },()=>{
+                messageTextbox.html('')
+            });
+          }
+        });
+      }, 2000);
+    });

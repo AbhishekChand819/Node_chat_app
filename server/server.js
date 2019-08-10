@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage, generateLocationMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 
@@ -29,8 +29,8 @@ io.on('connection', (socket) => {
     users.addUser(socket.id, params.name, params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
+    socket.emit('newMessage', generateMessage('Admin', ' Hi, welcome to PrivateChat!<br>Go ahead and send a message. 😄'));
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined the room.`));
     callback();
   });
 
@@ -48,13 +48,39 @@ io.on('connection', (socket) => {
         io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
       }
     });
+  
+  socket.on('createImgMessage', (msg) => {
+    var user = users.getUser(socket.id);
+    if(user) {
+    io.to(user.room).emit('newImgMessage', generateImgMessage(user.name, msg.img));
+    }
+  });
+  
+  socket.on('createVidMessage', (msg) => {
+    var user = users.getUser(socket.id);
+    if(user) {
+    io.to(user.room).emit('newVidMessage', generateVidMessage(user.name, msg.vid));
+    }
+  });
+  
+  socket.on('createAttMessage', (msg) => {
+    var user = users.getUser(socket.id);
+    if(user) {
+    io.to(user.room).emit('newAttMessage', generateAttMessage(user.name, msg.att));
+    }
+  });
+  
+  // socket.on('user image', function (msg) {
+  //     console.log(msg);
+  //     socket.broadcast.emit('user image', socket.nickname, msg);
+  //   });
 
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id);
     console.log(user);
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room.`));
     }
   });
 });

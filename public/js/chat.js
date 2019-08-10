@@ -41,10 +41,11 @@ socket.on('updateUserList',function(users) {
     jQuery('#users').html(ol);
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+const name = urlParams.get('name');
+let position = 'margin-right: auto;';
+
 socket.on('newMessage', (message) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get('name');
-    let position = 'margin-right: auto;';
     if(name == message.from){
       position = 'margin-left: auto;';
     }
@@ -61,48 +62,64 @@ socket.on('newMessage', (message) => {
 }); 
 
 socket.on('newLocationMessage',(message) => {
+    if(name == message.from){
+      position = 'margin-left: auto;';
+    }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#location-message-template').html();
     var html = Mustache.render(template, {
         from: message.from,
         url: message.url,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        position: position
     });
     jQuery('#messages').append(html);
     scrollToBottom();
 })
 
 socket.on('newImgMessage', (message) => {
+    if(name == message.from){
+      position = 'margin-left: auto;';
+    }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#img-message-template').html();
     var html = Mustache.render(template, {
         image: message.image,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        position: position
     });
     jQuery('#messages').append(html);
     scrollToBottom();
 }); 
 
 socket.on('newVidMessage', (message) => {
+    if(name == message.from){
+      position = 'margin-left: auto;';
+    }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#vid-message-template').html();
     var html = Mustache.render(template, {
         vid: message.vid,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        position: position
     });
     jQuery('#messages').append(html);
     scrollToBottom();
 }); 
 
 socket.on('newAttMessage', (message) => {
+    if(name == message.from){
+      position = 'margin-left: auto;';
+    }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#att-message-template').html();
     var html = Mustache.render(template, {
         att: message.att,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        position: position
     });
     jQuery('#messages').append(html);
     scrollToBottom();

@@ -79,7 +79,7 @@
 					        </div>
 				</script>
 				<script id="location-message-template" type="text/template">
-					<div class="msg-bubble">
+					<div class="msg-bubble" style="{{position}}">
 					          <div class="msg-info">
 					            <div class="msg-info-name">{{from}}</div>
 					            <div class="msg-info-time">{{createdAt}}</div>
@@ -90,7 +90,7 @@
 					        </div>
 				</script>
 				<script id="img-message-template" type="text/template">
-					<div class="msg-bubble">
+					<div class="msg-bubble" style="{{position}}">
 					          <div class="msg-info">
 					            <div class="msg-info-name">{{from}}</div>
 					            <div class="msg-info-time">{{createdAt}}</div>
@@ -103,7 +103,7 @@
 					        </div>
 				</script>
         <script id="vid-message-template" type="text/template">
-					<div class="msg-bubble">
+					<div class="msg-bubble" style="{{position}}">
 					          <div class="msg-info">
 					            <div class="msg-info-name">{{from}}</div>
 					            <div class="msg-info-time">{{createdAt}}</div>
@@ -116,7 +116,7 @@
 					        </div>
 				</script>
         <script id="att-message-template" type="text/template">
-					<div class="msg-bubble">
+					<div class="msg-bubble" style="{{position}}">
 					          <div class="msg-info">
 					            <div class="msg-info-name">{{from}}</div>
 					            <div class="msg-info-time">{{createdAt}}</div>
@@ -178,7 +178,7 @@
     var url = "https://web-chat.glitch.me/index.html?" + room_param;
     
     function share_email() {
-        var msgbody = "Hey i am inviting you to join my chat room.\nClick <a href="+url+">Here</a> to Join Room!";
+        var msgbody = "Hey i am inviting you to join my chat room.\nVisit "+url+" to Join Room!";
         var subject = "Join Chat Room Invite";
         msgbody = encodeURIComponent(msgbody);
         subject = encodeURIComponent(subject);

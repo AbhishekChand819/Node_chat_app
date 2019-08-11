@@ -40,4 +40,21 @@ return {
 }
 };
 
-module.exports= {generateMessage,generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage};
+var generateAdminMessage = (from,text) => {
+return {
+    from,
+    text,
+    createdAt: moment.valueOf()
+}
+};
+
+
+var generateAdminLMessage = (from,text) => {
+return {
+    from,
+    text,
+    createdAt: moment.valueOf()
+}
+};
+
+module.exports= {generateMessage,generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage,generateAdminMessage,generateAdminLMessage};

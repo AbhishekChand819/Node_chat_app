@@ -34,20 +34,25 @@ socket.on('disconnect',() => {
 });
 
 socket.on('updateUserList',function(users) {
-    var ol = jQuery('<ol></ol>');
+    var ol = jQuery('<ul class="plus"></ul>');
     users.forEach(function (user) {
         ol.append(jQuery('<li></li>').text(user));
     });
     jQuery('#users').html(ol);
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-const name = urlParams.get('name');
-let position = 'margin-right: auto;';
+
+let position;
 
 socket.on('newMessage', (message) => {
+    let urlParams = new URLSearchParams(window.location.search);
+    let name = urlParams.get('name');
+    console.log(name);
+    console.log(message.from);
     if(name == message.from){
       position = 'margin-left: auto;';
+    } else {
+      position = 'margin-right: auto;margin-left:75px;'
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#message-template').html();
@@ -56,6 +61,30 @@ socket.on('newMessage', (message) => {
         from: message.from,
         createdAt: formattedTime,
         position: position
+    });
+    jQuery('#messages').append(html);
+    scrollToBottom();
+}); 
+
+socket.on('newAdminMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#admin-message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    jQuery('#messages').append(html);
+    scrollToBottom();
+}); 
+
+socket.on('newAdminLMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var template = jQuery('#adminl-message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
     });
     jQuery('#messages').append(html);
     scrollToBottom();

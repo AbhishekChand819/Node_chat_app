@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage, generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage,generateImgMessage,generateVidMessage,generateAttMessage,generateAdminMessage,generateAdminLMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 
@@ -29,8 +29,8 @@ io.on('connection', (socket) => {
     users.addUser(socket.id, params.name, params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('newMessage', generateMessage('Admin', ' Hi, welcome to PrivateChat!<br>Go ahead and send a message. 😄'));
-    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined the room.`));
+    socket.emit('newAdminMessage', generateAdminMessage('Admin', ' Hi, welcome to PrivateChat!Go ahead and send a message. 😄'));
+    socket.broadcast.to(params.room).emit('newAdminMessage', generateAdminMessage('Admin', `${params.name} has joined the room.`));
     callback();
   });
 
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
     console.log(user);
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room.`));
+      io.to(user.room).emit('newAdminLMessage', generateAdminLMessage('Admin', `${user.name} has left the room.`));
     }
   });
 });

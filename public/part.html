@@ -11,18 +11,25 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
   <style>
-      body:before {
-        box-shadow:none;
+    body:before {
+       box-shadow:none;
+    }
+    body {
+      background: #36D1DC;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to bottom, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to bottom, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
   </style>
 
 <body>
 	<div class="chat__sidebar">
+    <h4>Room Participants</h4>
 		<div id="users"></div>
 	</div>
+  
 	<section class="msger">
 		<header class="msger-header">
-			<div class="msger-header-title"> <i class="fas fa-comment-alt"></i> Private Chat</div>
+			<div class="msger-header-title"><p>Private Chat</p></div>
 			<div class="msger-header-options dropdown"> <span onclick="myFunction()" class="dropbtn"><i class="fa fa-ellipsis-v"></i></span>
 				<div id="myDropdown" class="dropdown-content">
 					<button id="send-location">Send Location</button>
@@ -42,18 +49,19 @@
           <div class="modal-header">
             <h5 class="modal-title">Invite To Chat Room</h5>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="margin: auto;">
             <button class="shareBtn btn btn-secondary" onclick="share_email()"><i class="fa fa-envelope"></i> Email</button>
             <button class="shareBtn btn btn-success" onclick="share_whatsapp()"><i class="fa fa-whatsapp"></i> WhatsApp</button>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
+    
 		<main class="msger-chat">
-			<div id="messages" style="overflow-y: hidden !important;">
+			<div id="messages">
 				<script id="message-template" type="text/template">
 					<div class="msg-bubble" style="{{position}}">
 					          <div class="msg-info">
@@ -126,21 +134,24 @@
 			</div>
 		</main>
 		<form class="msger-inputarea" id="message-form">
-			<textarea class="msger-input" id="message_area" name="message" placeholder="Enter your message..." autofocus rows="1"></textarea>
-			<button class="send"><i class="fa fa-send-o"></i>
-			</button>
+			<textarea class="msger-input" id="message_area" name="message" placeholder="Type a message..." autofocus rows="1"></textarea>
+			<button type="submit" class="send"><i class="fa fa-send-o"></i></button>
 		</form>
 	</section>
+  
+  <canvas style="position: absolute; z-index: -1;"></canvas>
   
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="/js/libs/jquery-3.3.1.min.js"></script>
 	<script src="/js/libs/deparam.js"></script>
 	<script src="/js/chat.js"></script>
+  <script src="/js/bubbles.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 	<script src="/js/libs/moment.js"></script>
 	<script src="/js/libs/mustache.js"></script>
 	<script src="/js/libs/emojionearea.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
 	<script>
 		$(document).ready(function(){
 		  $("#message_area").emojioneArea({
@@ -149,6 +160,12 @@
 		})
 	</script>
 	<script>
+    $.LoadingOverlaySetup({
+        background      : "rgba(0, 0, 0, 0.5)",
+        image           : "https://meditationworks.com/wp-content/uploads/2017/05/Clock-Icon-ORANGE.png",
+        imageAnimation  : "1.5s fadein"
+    });
+    
 		function myFunction() {
 		  document.getElementById("myDropdown").classList.toggle("show");
 		}
@@ -172,7 +189,7 @@
     }
     
     var room_param = document.location.href.split('&')[1];
-    var url = "https://web-chat.glitch.me/index.html?" + room_param;
+    var url = "https://privatechat.glitch.me/?" + room_param;
     
     function share_email() {
         var msgbody = "Hey i am inviting you to join my chat room.\nVisit "+url+" to Join Room!";

@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     users.addUser(socket.id, params.name, params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('newAdminMessage', generateAdminMessage('Admin', ' Hi, welcome to PrivateChat!Go ahead and send a message. 😄'));
+    socket.emit('newAdminMessage', generateAdminMessage('Admin', ' Hi, welcome to PrivateChat! Go ahead & send a message. 😄'));
     socket.broadcast.to(params.room).emit('newAdminMessage', generateAdminMessage('Admin', `${params.name} has joined the room.`));
     callback();
   });

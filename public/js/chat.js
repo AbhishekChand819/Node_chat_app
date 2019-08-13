@@ -1,31 +1,19 @@
 
 var socket = io();
 
-function scrollToBottom() 
-{
-    var messages = jQuery('#messages');
-    var newMessage = messages.children('li:last-child');
-    var clientHeight = messages.prop('clientHeight');
-    var scrollTop = messages.prop('scrollTop');
-    var scrollHeight = messages.prop('scrollHeight');
-    var newMessageHeight = newMessage.innerHeight();
-    var lastMessageHeight = newMessage.prev().innerHeight();
-    
-    if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight >= scrollHeight) {
-        messages.scrollTop(scrollHeight);
-    }
+function scrollToBottom() {
+  $(".msger-chat").animate({ scrollTop: $(".msger-chat").height() }, 500);
 }
-
 
 socket.on('connect',() =>{
     var params = jQuery.deparam(window.location.search);
-    socket.emit('join',params, function(err) {
+    socket.emit('join', params, function(err) {
         if (err) {
             alert(err);
             window.location.href = '/';
         }
         else {
-            console.log('No error');
+            console.log('No Error');
         }
     });
 });
@@ -36,23 +24,20 @@ socket.on('disconnect',() => {
 socket.on('updateUserList',function(users) {
     var ol = jQuery('<ul class="plus"></ul>');
     users.forEach(function (user) {
-        ol.append(jQuery('<li></li>').text(user));
+        ol.append(jQuery('<li></li>').html('<i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;'+user));
     });
     jQuery('#users').html(ol);
 });
 
-
 let position;
+let urlParams = new URLSearchParams(window.location.search);
+let name = urlParams.get('name');
 
 socket.on('newMessage', (message) => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let name = urlParams.get('name');
-    console.log(name);
-    console.log(message.from);
     if(name == message.from){
       position = 'margin-left: auto;';
     } else {
-      position = 'margin-right: auto;margin-left:75px;'
+      position = 'margin-right: auto;';
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#message-template').html();
@@ -64,7 +49,7 @@ socket.on('newMessage', (message) => {
     });
     jQuery('#messages').append(html);
     scrollToBottom();
-}); 
+});
 
 socket.on('newAdminMessage', (message) => {
     var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -91,8 +76,11 @@ socket.on('newAdminLMessage', (message) => {
 }); 
 
 socket.on('newLocationMessage',(message) => {
+    $(".msger-chat").LoadingOverlay("hide");
     if(name == message.from){
       position = 'margin-left: auto;';
+    } else {
+      position = 'margin-right: auto;';
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#location-message-template').html();
@@ -107,8 +95,11 @@ socket.on('newLocationMessage',(message) => {
 })
 
 socket.on('newImgMessage', (message) => {
+    $(".msger-chat").LoadingOverlay("hide");
     if(name == message.from){
       position = 'margin-left: auto;';
+    } else {
+      position = 'margin-right: auto;';
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#img-message-template').html();
@@ -123,8 +114,11 @@ socket.on('newImgMessage', (message) => {
 }); 
 
 socket.on('newVidMessage', (message) => {
+    $(".msger-chat").LoadingOverlay("hide");
     if(name == message.from){
       position = 'margin-left: auto;';
+    } else {
+      position = 'margin-right: auto;';
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#vid-message-template').html();
@@ -139,8 +133,11 @@ socket.on('newVidMessage', (message) => {
 }); 
 
 socket.on('newAttMessage', (message) => {
+    $(".msger-chat").LoadingOverlay("hide");
     if(name == message.from){
       position = 'margin-left: auto;';
+    } else {
+      position = 'margin-right: auto;';
     }
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#att-message-template').html();
@@ -154,17 +151,14 @@ socket.on('newAttMessage', (message) => {
     scrollToBottom();
 }); 
 
-// socket.on('user image', image);
-
-jQuery('#message-form').on('submit',(e) => {
-    e.preventDefault();
-
-    var messageTextbox = jQuery('[name=message]');
-    socket.emit('createMessage',{
-        text:messageTextbox.val()
-    },()=>{
-        messageTextbox.val('')
-    });
+$("#message-form").on('submit', function(e){
+  e.preventDefault();
+  var messageTextbox = $('.emojionearea-editor');
+  socket.emit('createMessage',{
+      text:messageTextbox.html()
+  },()=>{
+      messageTextbox.html('')
+  });
 });
 
 var locationButton = jQuery('#send-location');
@@ -177,6 +171,7 @@ locationButton.on('click', () => {
 
     navigator.geolocation.getCurrentPosition((position) => {
         locationButton.removeAttr('disabled').text('Send location');
+        $(".msger-chat").LoadingOverlay("show");
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -192,6 +187,7 @@ locationButton.on('click', () => {
       var reader = new FileReader();
       reader.onload = function(evt){
         // image('',evt.target.result);
+        $(".msger-chat").LoadingOverlay("show");
         socket.emit('createImgMessage', {img: evt.target.result});
       };
       reader.readAsDataURL(data);
@@ -202,6 +198,7 @@ locationButton.on('click', () => {
       var reader = new FileReader();
       reader.onload = function(evt){
         // image('',evt.target.result);
+        $(".msger-chat").LoadingOverlay("show");
         socket.emit('createVidMessage', {vid: evt.target.result});
       };
       reader.readAsDataURL(data);
@@ -212,6 +209,7 @@ $('#attfile').bind('change', function(e){
       var reader = new FileReader();
       reader.onload = function(evt){
         // image('',evt.target.result);
+        $(".msger-chat").LoadingOverlay("show");
         socket.emit('createAttMessage', {att: evt.target.result});
       };
       reader.readAsDataURL(data);
@@ -219,6 +217,7 @@ $('#attfile').bind('change', function(e){
 
     $(function(){
       setTimeout(function(){
+        $(".emojionearea").css("margin", "10px 15px");
         $('.emojionearea-editor').keypress(function(e){   
           if(e.which == 13 && e.shiftKey) {
             
@@ -231,5 +230,5 @@ $('#attfile').bind('change', function(e){
             });
           }
         });
-      }, 2000);
+      }, 1000);
     });

@@ -156,7 +156,7 @@ h3 {
 
 @media (max-width:600px) {
 	* {
-		font-size: 1rem
+		font-size: 13px;
 	}
 	.chat__sidebar {
 		display: none
@@ -444,10 +444,10 @@ body {
 
 .show {display: block;}
 
-img {
+/* img {
   height: 150px;
   width: 200px;
-}
+} */
 
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
@@ -740,3 +740,9 @@ ul li {
   text-align: center;
   border-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn-IS0NTW0Au_qt8N5PHNpNVNO5qrAxSeUHPn4t20rbOT6yk-T) 30 round;
 } */
+
+@media (max-width:600px) {
+  .msger, .msger-chat, .msger-header, #message-form {
+    width: 100%;
+  }
+}

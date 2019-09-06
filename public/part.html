@@ -9,6 +9,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/css/emojionearea.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146396243-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-146396243-1');
+  </script>
 </head>
   <style>
     body:before {
@@ -19,6 +26,63 @@
       background: -webkit-linear-gradient(to bottom, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to bottom, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
+    
+    #invite_modal {
+      top: 25%;
+    }
+
+    @media (max-width: 600px) {
+      .welcome, .leave {
+        white-space: normal;
+        padding: 10px 5px;
+        width: 100%;
+      }
+      .msger{
+        height: 100%;
+      }
+      body {
+        align-items: stretch;
+      }
+    }
+    
+/*     @media only screen and (max-width: 400px) {
+      .msger{
+        display: block;
+        height: 550px;
+        width: 350px;
+      }
+      .msger-chat{
+        height: calc(100% - 160px);
+      }
+    }
+    @media only screen and (min-width: 400px) {
+      .msger{
+        display: block;
+        height: calc(100% - 160px);
+        width: 400px;
+      }
+    }
+    @media only screen and (max-width: 350px) {
+      .msger{
+        display: block;
+        height: calc(100% - 160px);
+        width: 310px;
+      }
+    }
+    @media only screen and (min-width: 750px) {
+      .msger{
+        display: block;
+        height: calc(100% - 160px);
+        width: 500px;
+      }
+    }
+    @media only screen and (min-width: 1000px) {
+      .msger{
+        display: block;
+        height: calc(100% - 160px);
+        width: 750px;
+      }
+    } */
   </style>
 
 <body>
@@ -102,7 +166,7 @@
 					          </div>
 					          <div class="msg-text">
                     <a href="{{image}}" download>
-					            <img src="{{image}}">
+					            <img src="{{image}}" width="200px">
                     </a>
 					          </div>
 					        </div>
@@ -127,7 +191,7 @@
 					            <div class="msg-info-time">{{createdAt}}</div>
 					          </div>
 					          <div class="msg-text">
-                      <a class="doc" href="{{att}}"><span>Download</span><span>Document</span></a>
+                      <a href="{{att}}"><img src="http://bmd.gov.bd/apk/download-icon.png" width="200px"/></a>
 					          </div>
 					        </div>
 				</script>

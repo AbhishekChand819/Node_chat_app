@@ -230,5 +230,11 @@ $('#attfile').bind('change', function(e){
             });
           }
         });
+        $(".emojionearea-editor").focus(function(){
+          scrollToBottom();
+        });
+        $(".emojionearea-editor").blur(function(){
+          scrollToBottom();
+        });
       }, 1000);
     });
